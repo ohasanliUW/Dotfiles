@@ -1,0 +1,47 @@
+{
+ "Week": "2024-05-28",
+ "LastWeek": "",
+ "X": 0.1091881081278483,
+ "Programs": [
+  {
+   "Program": "golang.org/x/tools/gopls",
+   "Version": "v0.15.3",
+   "GoVersion": "go1.22.2",
+   "GOOS": "linux",
+   "GOARCH": "amd64",
+   "Counters": {
+    "gopls/client:vscode": 1,
+    "gopls/completion/latency:\u003c100ms": 246,
+    "gopls/completion/latency:\u003c10ms": 1049,
+    "gopls/completion/latency:\u003c200ms": 21,
+    "gopls/completion/latency:\u003c50ms": 1042,
+    "gopls/definition/error-latency:\u003c10ms": 1,
+    "gopls/definition/latency:\u003c10ms": 593,
+    "gopls/definition/latency:\u003c200ms": 2,
+    "gopls/definition/latency:\u003c500ms": 1,
+    "gopls/definition/latency:\u003c50ms": 2,
+    "gopls/goversion:1.22": 1,
+    "gopls/hover/error-latency:\u003c10ms": 1,
+    "gopls/hover/latency:\u003c10ms": 3103,
+    "gopls/implementation/error-latency:\u003c10ms": 2,
+    "gopls/implementation/latency:\u003c500ms": 1,
+    "gopls/references/latency:\u003c10ms": 17
+   },
+   "Stacks": {}
+  },
+  {
+   "Program": "github.com/golang/vscode-go/vscgo",
+   "Version": "v0.41.4",
+   "GoVersion": "go1.22.2",
+   "GOOS": "linux",
+   "GOARCH": "amd64",
+   "Counters": {
+    "activation_latency:\u003c500ms": 1,
+    "inc_counters_duration:\u003c10ms": 1,
+    "inc_counters_num_input:\u003c2": 1
+   },
+   "Stacks": {}
+  }
+ ],
+ "Config": "v0.21.0"
+}

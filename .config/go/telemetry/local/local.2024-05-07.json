@@ -1,0 +1,69 @@
+{
+ "Week": "2024-05-07",
+ "LastWeek": "",
+ "X": 0.3298027571019593,
+ "Programs": [
+  {
+   "Program": "golang.org/x/tools/gopls",
+   "Version": "v0.15.2",
+   "GoVersion": "go1.22.2",
+   "GOOS": "linux",
+   "GOARCH": "amd64",
+   "Counters": {
+    "gopls/client:vscode": 2,
+    "gopls/completion/latency:\u003c100ms": 59,
+    "gopls/completion/latency:\u003c10ms": 364,
+    "gopls/completion/latency:\u003c200ms": 6,
+    "gopls/completion/latency:\u003c500ms": 6,
+    "gopls/completion/latency:\u003c50ms": 514,
+    "gopls/definition/latency:\u003c10ms": 229,
+    "gopls/definition/latency:\u003c200ms": 1,
+    "gopls/definition/latency:\u003c500ms": 2,
+    "gopls/goversion:1.22": 3,
+    "gopls/hover/error-latency:\u003c10ms": 3,
+    "gopls/hover/latency:\u003c10ms": 775,
+    "gopls/references/latency:\u003c10ms": 3
+   },
+   "Stacks": {}
+  },
+  {
+   "Program": "golang.org/x/tools/gopls",
+   "Version": "v0.15.3",
+   "GoVersion": "go1.22.2",
+   "GOOS": "linux",
+   "GOARCH": "amd64",
+   "Counters": {
+    "gopls/client:vscode": 5,
+    "gopls/completion/latency:\u003c100ms": 130,
+    "gopls/completion/latency:\u003c10ms": 948,
+    "gopls/completion/latency:\u003c200ms": 38,
+    "gopls/completion/latency:\u003c50ms": 345,
+    "gopls/definition/error-latency:\u003c10ms": 3,
+    "gopls/definition/latency:\u003c100ms": 1,
+    "gopls/definition/latency:\u003c10ms": 247,
+    "gopls/definition/latency:\u003c200ms": 1,
+    "gopls/goversion:1.22": 5,
+    "gopls/hover/error-latency:\u003c10ms": 2,
+    "gopls/hover/latency:\u003c10ms": 930
+   },
+   "Stacks": {}
+  },
+  {
+   "Program": "github.com/golang/vscode-go/vscgo",
+   "Version": "v0.41.4",
+   "GoVersion": "go1.22.2",
+   "GOOS": "linux",
+   "GOARCH": "amd64",
+   "Counters": {
+    "activation_latency:\u003c500ms": 6,
+    "inc_counters_duration:\u003c100ms": 1,
+    "inc_counters_duration:\u003c10ms": 5,
+    "inc_counters_num_input:\u003c2": 5,
+    "inc_counters_num_input:\u003c4": 1,
+    "vscgo_install": 1
+   },
+   "Stacks": {}
+  }
+ ],
+ "Config": "v0.19.0"
+}
