@@ -12,23 +12,64 @@ return {
     "saadparwaiz1/cmp_luasnip",
     "j-hui/fidget.nvim",
   },
-
+  opts = function()
+    local keys = require("lazyvim.plugins.lsp.keymaps")
+    keys[#keys + 1] = { "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", desc = "Go to definition" }
+    keys[#keys + 1] = { "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", desc = "Declaration" }
+    keys[#keys + 1] = { "gI", "<cmd>lua vim.lsp.buf.implementation()<CR>", desc = "Implementation" }
+    keys[#keys + 1] = { "gr", "<cmd>lua vim.lsp.buf.references()<CR>", desc = "References" }
+    keys[#keys + 1] = { "K", "<cmd>lua vim.lsp.buf.hover()<CR>", desc = "Hover" }
+    keys[#keys + 1] =
+      { "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", mode = { "n", "v" }, desc = "Code action" }
+    keys[#keys + 1] = { "<leader>cr", "<cmd>lua vim.lsp.buf.rename()<CR>", desc = "Rename Symbol" }
+  end,
+  -- opts = {
+  --   servers = {
+  --     pyright = {
+  --       enabled = false,
+  --     },
+  --     pylsp = {
+  --       plugins = {
+  --         pyflakes = {
+  --           enabled = false,
+  --         },
+  --         mccabe = {
+  --           enabled = false,
+  --         },
+  --         rope = {
+  --           enabled = true,
+  --         },
+  --         ruff = {
+  --           enabled = true,
+  --           executable = "ruff",
+  --           formatEnabled = true,
+  --           format = { "I" },
+  --           unsafeFixes = false,
+  --           lineLength = 120,
+  --           targetVersion = "py311",
+  --         },
+  --         pycodestyle = {
+  --           enabled = false,
+  --         },
+  --       },
+  --     },
+  --   },
+  -- },
   config = function()
-    local cmp = require("cmp")
     local cmp_lsp = require("cmp_nvim_lsp")
     local capabilities =
       vim.tbl_deep_extend("force", {}, vim.lsp.protocol.make_client_capabilities(), cmp_lsp.default_capabilities())
 
-    require("fidget").setup({})
     require("mason").setup()
     require("mason-lspconfig").setup({
       ensure_installed = {
         "lua_ls",
         "rust_analyzer",
         "gopls",
-        "ruff",
         "zk",
+        "ruff",
         "pylsp",
+        -- "pylyzer",
       },
       handlers = {
         function(server_name) -- default handler (optional)
@@ -36,7 +77,6 @@ return {
             capabilities = capabilities,
           })
         end,
-
         ["pylsp"] = function()
           local lspconfig = require("lspconfig")
           lspconfig.pylsp.setup({
@@ -44,101 +84,44 @@ return {
             settings = {
               pylsp = {
                 plugins = {
-                  pycodestyle = {
+                  mccabe = {
                     enabled = false,
                   },
                   pyflakes = {
                     enabled = false,
                   },
-                  mccabe = {
+                  pycodestyle = {
                     enabled = false,
                   },
                   rope = {
                     enabled = true,
                   },
-                  ruff = {
-                    enabled = true,
-                    executable = "ruff",
-                    formatEnabled = true,
-                    format = { "I" },
-                    unsafeFixes = false,
-                    lineLength = 120,
-                    targetVersion = "py311",
-                  },
+                  -- ruff = {
+                  --   enabled = true,
+                  --   executable = "ruff",
+                  --   formatEnabled = true,
+                  --   format = { "I" },
+                  --   unsafeFixes = false,
+                  --   lineLength = 120,
+                  --   targetVersion = "py311",
+                  -- },
                 },
               },
             },
           })
         end,
-
-        ["lua_ls"] = function()
-          local lspconfig = require("lspconfig")
-          lspconfig.lua_ls.setup({
-            capabilities = capabilities,
-            settings = {
-              Lua = {
-                runtime = { version = "Lua 5.1" },
-                diagnostics = {
-                  globals = { "vim", "it", "describe", "before_each", "after_each" },
-                },
-              },
-            },
-          })
-        end,
-
-        ["pylyzer"] = function()
-          local lspconfig = require("lspconfig")
-
-          lspconfig.pylyzer.setup({
-            name = "pylyzer",
-            cmd = { "pylyzer", "--server" },
-            filetypes = { "python" },
-            root_dir = function()
-              return vim.env.ATT
-            end,
-          })
-        end,
-
-        ["ruff"] = function()
-          local lspconfig = require("lspconfig")
-          lspconfig.ruff.setup({
-            capabilities = capabilities,
-          })
-        end,
-      },
-    })
-
-    local cmp_select = { behavior = cmp.SelectBehavior.Select }
-
-    cmp.setup({
-      snippet = {
-        expand = function(args)
-          require("luasnip").lsp_expand(args.body) -- For `luasnip` users.
-        end,
-      },
-      mapping = cmp.mapping.preset.insert({
-        ["<C-p>"] = cmp.mapping.select_prev_item(cmp_select),
-        ["<C-n>"] = cmp.mapping.select_next_item(cmp_select),
-        ["<C-y>"] = cmp.mapping.confirm({ select = true }),
-        ["<C-Space>"] = cmp.mapping.complete(),
-      }),
-      sources = cmp.config.sources({
-        { name = "nvim_lsp" },
-        { name = "luasnip" }, -- For luasnip users.
-      }, {
-        { name = "buffer" },
-      }),
-    })
-
-    vim.diagnostic.config({
-      -- update_in_insert = true,
-      float = {
-        focusable = false,
-        style = "minimal",
-        border = "rounded",
-        source = "always",
-        header = "",
-        prefix = "",
+        -- ["pylyzer"] = function()
+        --   local lspconfig = require("lspconfig")
+        --
+        --   lspconfig.pylyzer.setup({
+        --     name = "pylyzer",
+        --     cmd = { "pylyzer", "--server" },
+        --     filetypes = { "python" },
+        --     root_dir = function()
+        --       return vim.env.ATT
+        --     end,
+        --   })
+        -- end,
       },
     })
   end,
