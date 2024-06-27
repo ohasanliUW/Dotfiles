@@ -96,6 +96,9 @@ return {
                   rope = {
                     enabled = true,
                   },
+                  rope_autoimport = {
+                    enabled = true,
+                  },
                   -- ruff = {
                   --   enabled = true,
                   --   executable = "ruff",
