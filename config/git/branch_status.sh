@@ -30,6 +30,16 @@ fetch_merged_branches() {
     gh pr list -s merged --json headRefName --jq '.[].headRefName'
 }
 
+parse_date() {
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+        # macOS date command
+        date -j -f "%Y-%m-%d %H:%M:%S %z" "$1" +"%s"
+    else
+        # GNU date command
+        date -d "$1" +"%s"
+    fi
+}
+
 # Main function to display branch status
 branch_status() {
     main_branch=$(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@')
@@ -46,7 +56,7 @@ branch_status() {
         ahead=$(git rev-list --count $branch..$main_branch)
         behind=$(git rev-list --count $main_branch..$branch)
         last_commit=$(git log -1 --format=%ci $branch)
-        last_commit_delta=$(date -d "$last_commit" +%s)
+        last_commit_delta=$(parse_date "$last_commit")
         now=$(date +%s)
         delta=$((now - last_commit_delta))
         time_ago=$(displaytime $delta)
