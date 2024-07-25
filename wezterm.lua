@@ -67,6 +67,7 @@ end
 
 local FONTS = {
 	"Monaspace Neon",
+	"icomoon",
 	"Monaco Nerd Font Mono",
 	"CodeNewRoman Nerd Font Mono",
 	"SaurceCodePro Nerd Font Mono",
