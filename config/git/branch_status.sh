@@ -8,8 +8,8 @@ RED='\033[0;31m'
 NC='\033[0m' # No Color
 
 # Devicons for custom icons (make sure your terminal supports Nerd Fonts)
-MERGED_ICON="✅"     # Rocket icon for merged (Devicon code: \uf135)
-NON_MERGED_ICON="⌚" # Cross mark for non-merged (Devicon code: \uf05e)
+MERGED_ICON=""     # Rocket icon for merged (Devicon code: \uf135)
+NON_MERGED_ICON="-" # Cross mark for non-merged (Devicon code: \uf05e)
 
 # Function to display time in a human-readable format
 displaytime() {
@@ -53,8 +53,8 @@ branch_status() {
 
     # Iterate over local branches
     for branch in $(git for-each-ref --format='%(refname:short)' refs/heads/); do
-        ahead=$(git rev-list --count $branch..$main_branch)
-        behind=$(git rev-list --count $main_branch..$branch)
+        behind=$(git rev-list --count $branch..$main_branch)
+        ahead=$(git rev-list --count $main_branch..$branch)
         last_commit=$(git log -1 --format=%ci $branch)
         last_commit_delta=$(parse_date "$last_commit")
         now=$(date +%s)
@@ -79,7 +79,12 @@ branch_status() {
     # Print sorted branches
     for branch_info in "${sorted_branches[@]}"; do
         IFS='|' read -r last_commit_delta merged ahead behind branch time_ago <<<"$branch_info"
-        printf "%-10s %-10s ${LIGHT_PURPLE}%-10s${NC} ${BLUE}%-40s${NC} %-20s\n" "$merged" $ahead $behind $branch "$time_ago"
+        if [ "$merged" == "$MERGED_ICON" ]; then
+            w="%-12s"
+        else
+            w="%-10s"
+        fi
+        printf "$w %-10s ${LIGHT_PURPLE}%-10s${NC} ${BLUE}%-40s${NC} %-20s\n" "$merged" $ahead $behind $branch "$time_ago"
     done
 }
 
