@@ -48,17 +48,17 @@ return {
         local cmp_lsp = require("cmp_nvim_lsp")
         opts.capabilities =
           vim.tbl_deep_extend("force", {}, vim.lsp.protocol.make_client_capabilities(), cmp_lsp.default_capabilities())
-        opts.cmd = { "/home/ohasanli/.pyenv/shims/ruff", "server", "--preview" } -- Add the --preview option
-        opts.on_attach = function(client, bufnr)
-          if client.name == "ruff" then
-            vim.api.nvim_create_autocmd("BufWritePre", {
-              buffer = bufnr,
-              callback = function()
-                vim.lsp.buf.format({ async = true })
-              end,
-            })
-          end
-        end
+        opts.cmd = { "/usr/local/bin/ruff", "server", "--preview" } -- Add the --preview option
+        -- opts.on_attach = function(client, bufnr)
+        --   -- if client.name == "ruff" then
+        --   --   vim.api.nvim_create_autocmd("BufWritePre", {
+        --   --     buffer = bufnr,
+        --   --     callback = function()
+        --   --       vim.lsp.buf.format({ async = true })
+        --   --     end,
+        --   --   })
+        --   -- end
+        -- end
       end,
       lua_ls = function(_, opts)
         local cmp_lsp = require("cmp_nvim_lsp")

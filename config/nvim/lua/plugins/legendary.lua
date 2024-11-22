@@ -110,7 +110,7 @@ return {
             -- for moving cursor between windows
             move = "<C>",
             -- for resizing windows
-            resize = "<M>",
+            resize = "<A>",
             -- for swapping window buffers
             swap = false, -- false disables creating a binding
           },

@@ -67,7 +67,7 @@ vim.keymap.set("i", "<C-c>", "<Esc>")
 
 vim.keymap.set("n", "Q", "<nop>")
 vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
--- vim.keymap.set("n", "<leader>f", vim.lsp.buf.format)
+vim.keymap.set("n", "<leader>f", vim.lsp.buf.format)
 
 vim.keymap.set("n", "<C-k>", "<cmd>cnext<CR>zz")
 vim.keymap.set("n", "<C-j>", "<cmd>cprev<CR>zz")
@@ -125,7 +125,6 @@ end)
 -- these keymaps will also accept a range,
 -- for example `10<A-h>` will `resize_left` by `(10 * config.default_amount)`
 local ss = require("smart-splits")
-
 vim.keymap.set("n", "<A-h>", ss.resize_left)
 vim.keymap.set("n", "<A-j>", ss.resize_down)
 vim.keymap.set("n", "<A-k>", ss.resize_up)
@@ -137,3 +136,12 @@ vim.keymap.set("n", "<C-j>", ss.move_cursor_down)
 vim.keymap.set("n", "<C-k>", ss.move_cursor_up)
 vim.keymap.set("n", "<C-l>", ss.move_cursor_right)
 vim.keymap.set("n", "<C-\\>", ss.move_cursor_previous)
+
+M = {}
+function M.setup_copilot_keymaps()
+  return {
+    { "<leader>ap", ":Copilot panel<CR>", desc = "Copilot panel" },
+  }
+end
+
+return M

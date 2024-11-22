@@ -688,14 +688,14 @@ local function split_nav(resize_or_move, key)
 	}
 end
 
-config.default_domain = "WSL:Ubuntu-22.04"
+-- config.default_domain = "WSL:Ubuntu-22.04"
 
 -- keys for moving and resizing panes in a split
 local act = w.action
 local split_keys = {
 	-- split actions
-	{ key = "\\", mods = "CTRL", action = act.SplitVertical({ domain = "CurrentPaneDomain" }) },
-	{ key = "5", mods = "CTRL", action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }) },
+	{ key = "5", mods = "CTRL", action = act.SplitVertical({ domain = "CurrentPaneDomain" }) },
+	{ key = "\\", mods = "CTRL", action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }) },
 	-- move between split panes
 	split_nav("move", "h"),
 	split_nav("move", "j"),
