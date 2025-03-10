@@ -28,6 +28,9 @@ vim.opt.incsearch = true
 vim.opt.termguicolors = true
 
 vim.opt.scrolloff = 24
+vim.o.scroll = 0
+vim.g.neoscroll = false
+vim.opt.smoothscroll = false
 vim.opt.signcolumn = "yes"
 vim.opt.isfname:append("@-@")
 

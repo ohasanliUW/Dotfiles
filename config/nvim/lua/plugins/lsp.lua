@@ -1,15 +1,7 @@
 return {
   "neovim/nvim-lspconfig",
   dependencies = {
-    "williamboman/mason.nvim",
-    "williamboman/mason-lspconfig.nvim",
-    "hrsh7th/cmp-nvim-lsp",
-    "hrsh7th/cmp-buffer",
-    "hrsh7th/cmp-path",
-    "hrsh7th/cmp-cmdline",
-    "hrsh7th/nvim-cmp",
-    "L3MON4D3/LuaSnip",
-    "saadparwaiz1/cmp_luasnip",
+    'saghen/blink.cmp',
     "j-hui/fidget.nvim",
   },
   init = function()
@@ -40,15 +32,15 @@ return {
     },
     setup = {
       pylance = function(_, opts)
-        local cmp_lsp = require("cmp_nvim_lsp")
+        local cmp = require("blink.cmp")
         opts.capabilities =
-          vim.tbl_deep_extend("force", {}, vim.lsp.protocol.make_client_capabilities(), cmp_lsp.default_capabilities())
+          vim.tbl_deep_extend("force", {}, vim.lsp.protocol.make_client_capabilities(), cmp.get_lsp_capabilities())
       end,
       ruff = function(_, opts)
-        local cmp_lsp = require("cmp_nvim_lsp")
+        local cmp = require("blink.cmp")
         opts.capabilities =
-          vim.tbl_deep_extend("force", {}, vim.lsp.protocol.make_client_capabilities(), cmp_lsp.default_capabilities())
-        opts.cmd = { "/home/ohasanli/.pyenv/shims/ruff", "server", "--preview" } -- Add the --preview option
+          vim.tbl_deep_extend("force", {}, vim.lsp.protocol.make_client_capabilities(), cmp.get_lsp_capabilities())
+        opts.cmd = { "/home/ohasanli/.pyenv/shims/ruff", "server", "--preview" }
         opts.on_attach = function(client, bufnr)
           if client.name == "ruff" then
             vim.api.nvim_create_autocmd("BufWritePre", {
@@ -61,9 +53,9 @@ return {
         end
       end,
       lua_ls = function(_, opts)
-        local cmp_lsp = require("cmp_nvim_lsp")
+        local cmp = require("blink.cmp")
         opts.capabilities =
-          vim.tbl_deep_extend("force", {}, vim.lsp.protocol.make_client_capabilities(), cmp_lsp.default_capabilities())
+          vim.tbl_deep_extend("force", {}, vim.lsp.protocol.make_client_capabilities(), cmp.get_lsp_capabilities())
         opts.settings = {
           Lua = {
             runtime = { version = "Lua 5.1" },
@@ -76,54 +68,55 @@ return {
     },
   },
   config = function(_, opts)
-    local cmp = require("cmp")
-    local cmp_lsp = require("cmp_nvim_lsp")
-    local cmp_select = { behavior = cmp.SelectBehavior.Select }
-
     require("fidget").setup({})
-    -- require("mason").setup()
-    -- require("mason-lspconfig").setup({
-    --   ensure_installed = {
-    --     "lua_ls",
-    --     "rust_analyzer",
-    --     "gopls",
-    --     "ruff",
-    --   },
-    -- })
 
     local lspconfig = require("lspconfig")
+    local configs = require("lspconfig.configs")
+
+    -- Debug: Print available server configurations
+    print("Available LSP configs:", vim.inspect(configs))
+
+    -- Debug: Check if pylance is registered
+    print("Is pylance registered:", configs.pylance ~= nil)
+
+    -- Try to load pylance config
+    local ok, pylance_config = pcall(require, "lspconfig.server_configurations.pylance")
+    print("Pylance config load result:", ok, vim.inspect(pylance_config))
+
+    -- Register pylance if needed
+    if not configs.pylance and ok then
+      print("Registering pylance config")
+      configs.pylance = pylance_config
+    end
+
+    -- Debug: Print servers that will be set up
+    print("Servers to set up:", vim.inspect(opts.servers))
+
     for server, server_opts in pairs(opts.servers) do
+      print("Setting up server:", server)
       if server_opts.enabled ~= false then
         local final_opts = vim.tbl_deep_extend("force", {}, server_opts)
         if opts.setup[server] then
+          print("Running setup for:", server)
           opts.setup[server](nil, final_opts)
         end
-        lspconfig[server].setup(final_opts)
+        
+        -- Debug: Print final options for each server
+        print("Final options for " .. server .. ":", vim.inspect(final_opts))
+        
+        -- Check if server config exists
+        if not lspconfig[server] then
+          print("Warning: LSP config not found for:", server)
+        else
+          lspconfig[server].setup(final_opts)
+          print("Successfully set up:", server)
+        end
+      else
+        print("Server disabled:", server)
       end
     end
 
-    cmp.setup({
-      snippet = {
-        expand = function(args)
-          require("luasnip").lsp_expand(args.body) -- For `luasnip` users.
-        end,
-      },
-      mapping = cmp.mapping.preset.insert({
-        ["<C-p>"] = cmp.mapping.select_prev_item(cmp_select),
-        ["<C-n>"] = cmp.mapping.select_next_item(cmp_select),
-        ["<C-y>"] = cmp.mapping.confirm({ select = true }),
-        ["<C-Space>"] = cmp.mapping.complete(),
-      }),
-      sources = cmp.config.sources({
-        { name = "nvim_lsp" },
-        { name = "luasnip" }, -- For luasnip users.
-      }, {
-        { name = "buffer" },
-      }),
-    })
-
     vim.diagnostic.config({
-      -- update_in_insert = true,
       float = {
         focusable = false,
         style = "minimal",
