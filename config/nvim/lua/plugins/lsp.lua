@@ -1,7 +1,7 @@
 return {
   "neovim/nvim-lspconfig",
   dependencies = {
-    'saghen/blink.cmp',
+    "saghen/blink.cmp",
     "j-hui/fidget.nvim",
   },
   init = function()
@@ -73,46 +73,27 @@ return {
     local lspconfig = require("lspconfig")
     local configs = require("lspconfig.configs")
 
-    -- Debug: Print available server configurations
-    print("Available LSP configs:", vim.inspect(configs))
-
-    -- Debug: Check if pylance is registered
-    print("Is pylance registered:", configs.pylance ~= nil)
-
     -- Try to load pylance config
     local ok, pylance_config = pcall(require, "lspconfig.server_configurations.pylance")
-    print("Pylance config load result:", ok, vim.inspect(pylance_config))
 
     -- Register pylance if needed
     if not configs.pylance and ok then
-      print("Registering pylance config")
       configs.pylance = pylance_config
     end
 
     -- Debug: Print servers that will be set up
-    print("Servers to set up:", vim.inspect(opts.servers))
 
     for server, server_opts in pairs(opts.servers) do
-      print("Setting up server:", server)
       if server_opts.enabled ~= false then
         local final_opts = vim.tbl_deep_extend("force", {}, server_opts)
         if opts.setup[server] then
-          print("Running setup for:", server)
           opts.setup[server](nil, final_opts)
         end
-        
-        -- Debug: Print final options for each server
-        print("Final options for " .. server .. ":", vim.inspect(final_opts))
-        
+
         -- Check if server config exists
-        if not lspconfig[server] then
-          print("Warning: LSP config not found for:", server)
-        else
+        if lspconfig[server] then
           lspconfig[server].setup(final_opts)
-          print("Successfully set up:", server)
         end
-      else
-        print("Server disabled:", server)
       end
     end
 
